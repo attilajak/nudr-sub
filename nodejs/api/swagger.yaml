@@ -1,0 +1,4443 @@
+openapi: 3.0.0
+info:
+  title: Unified Data Repository Service API file for subscription data
+  description: |
+    Unified Data Repository Service (subscription data).
+    The API version is defined in 3GPP TS 29.504.
+    © 2019, 3GPP Organizational Partners (ARIB, ATIS, CCSA, ETSI, TSDSI, TTA, TTC).
+    All rights reserved.
+  version: '-'
+externalDocs:
+  description: 3GPP TS 29.505 V15.4.0; 5G System; Usage of the Unified Data Repository
+    Service for subscription data; Stage 3
+  url: http://www.3gpp.org/ftp/Specs/archive/29_series/29.505/
+servers:
+- url: /
+paths:
+  /subscription-data/{ueId}/authentication-data/authentication-subscription:
+    get:
+      tags:
+      - Authentication Data (Document)
+      summary: Retrieves the authentication subscription data of a UE
+      operationId: QueryAuthSubsData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationSubscription'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AuthenticationDataDocument
+    patch:
+      tags:
+      - Authentication Subscription (Document)
+      summary: modify the authentication subscription data of a UE
+      operationId: ModifyAuthenticationSubscription
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Expected response to a valid request
+        403:
+          description: modification is rejected
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AuthenticationSubscriptionDocument
+  /subscription-data/{ueId}/authentication-data/authentication-status:
+    get:
+      tags:
+      - AuthEvent (Document)
+      summary: Retrieves the Authentication Status of a UE
+      operationId: QueryAuthenticationStatus
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthEvent'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AuthEventDocument
+    put:
+      tags:
+      - Authentication Status (Document)
+      summary: To store the Authentication Status data of a UE
+      operationId: CreateAuthenticationStatus
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthEvent'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AuthenticationStatusDocument
+  /subscription-data/{ueId}/ue-update-confirmation-data/sor-data:
+    get:
+      tags:
+      - Authentication SoR (Document)
+      summary: Retrieves the SoR acknowledgement information of a UE
+      operationId: QueryAuthSoR
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supportedFeatures
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SorData'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AuthenticationSoRDocument
+    put:
+      tags:
+      - Authentication SoR (Document)
+      summary: To store the SoR acknowledgement information of a UE
+      operationId: CreateAuthenticationSoR
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SorData'
+      responses:
+        204:
+          description: Expected response to a valid request
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AuthenticationSoRDocument
+  /subscription-data/{ueId}/ue-update-confirmation-data/upu-data:
+    get:
+      tags:
+      - Authentication UPU (Document)
+      summary: Retrieves the UPU acknowledgement information of a UE
+      operationId: QueryAuthUPU
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supportedFeatures
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpuData'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AuthenticationUPUDocument
+    put:
+      tags:
+      - Authentication UPU (Document)
+      summary: To store the UPU acknowledgement information of a UE
+      operationId: CreateAuthenticationUPU
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpuData'
+      responses:
+        204:
+          description: Expected response to a valid request
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AuthenticationUPUDocument
+  /subscription-data/{ueId}/{servingPlmnId}/provisioned-data:
+    get:
+      tags:
+      - Provisioned Data (Document)
+      summary: Retrieve multiple provisioned data sets of a UE
+      operationId: QueryProvisionedData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: servingPlmnId
+        in: path
+        description: PLMN ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarPlmnId'
+      - name: dataset-names
+        in: query
+        description: List of dataset names
+        required: false
+        style: form
+        explode: false
+        schema:
+          $ref: '#/components/schemas/DatasetNames'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionedDataSets'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: ProvisionedDataDocument
+  /subscription-data/{ueId}/{servingPlmnId}/provisioned-data/am-data:
+    get:
+      tags:
+      - Access And Mobility Subscription Data (Document)
+      summary: Retrieves the access and mobility subscription data of a UE
+      operationId: QueryAmData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: servingPlmnId
+        in: path
+        description: PLMN ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarPlmnId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      - name: If-None-Match
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.2
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: If-Modified-Since
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.3
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          headers:
+            Cache-Control:
+              description: Cache-Control containing max-age, as described in RFC 7234,
+                5.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+            ETag:
+              description: Entity Tag, containing a strong validator, as described
+                in RFC 7232, 2.3
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Last-Modified:
+              description: Timestamp for last modification of the resource, as described
+                in RFC 7232, 2.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessAndMobilitySubscriptionData'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AccessAndMobilitySubscriptionDataDocument
+  /subscription-data/{ueId}/{servingPlmnId}/provisioned-data/smf-selection-subscription-data:
+    get:
+      tags:
+      - SMF Selection Subscription Data (Document)
+      summary: Retrieves the SMF selection subscription data of a UE
+      operationId: QuerySmfSelectData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: servingPlmnId
+        in: path
+        description: PLMN ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarPlmnId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      - name: If-None-Match
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.2
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: If-Modified-Since
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.3
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          headers:
+            Cache-Control:
+              description: Cache-Control containing max-age, as described in RFC 7234,
+                5.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+            ETag:
+              description: Entity Tag, containing a strong validator, as described
+                in RFC 7232, 2.3
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Last-Modified:
+              description: Timestamp for last modification of the resource, as described
+                in RFC 7232, 2.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmfSelectionSubscriptionData'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMFSelectionSubscriptionDataDocument
+  /subscription-data/{ueId}/context-data/amf-3gpp-access:
+    get:
+      tags:
+      - AMF 3GPP Access Registration (Document)
+      summary: Retrieves the AMF context data of a UE using 3gpp access
+      operationId: QueryAmfContext3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Amf3GppAccessRegistration'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AMF3GPPAccessRegistrationDocument
+    put:
+      tags:
+      - AMF 3GPP Access Registration (Document)
+      summary: To store the AMF context data of a UE using 3gpp access in the UDR
+      operationId: CreateAmfContext3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Amf3GppAccessRegistration'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AMF3GPPAccessRegistrationDocument
+    patch:
+      tags:
+      - AMF 3GPP Access Registration (Document)
+      summary: To modify the AMF context data of a UE using 3gpp access in the UDR
+      operationId: AmfContext3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Expected response to a valid request
+        403:
+          description: modification is rejected
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AMF3GPPAccessRegistrationDocument
+  /subscription-data/{ueId}/context-data/amf-non-3gpp-access:
+    get:
+      tags:
+      - AMF Non-3GPP Access Registration (Document)
+      summary: Retrieves the AMF context data of a UE using non-3gpp access
+      operationId: QueryAmfContextNon3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AmfNon3GppAccessRegistration'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AMFNon3GPPAccessRegistrationDocument
+    put:
+      tags:
+      - AMF Non-3GPP Access Registration (Document)
+      summary: To store the AMF context data of a UE using non-3gpp access in the
+        UDR
+      operationId: CreateAmfContextNon3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AmfNon3GppAccessRegistration'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AMFNon3GPPAccessRegistrationDocument
+    patch:
+      tags:
+      - AMF Non-3GPP Access Registration (Document)
+      summary: To modify the AMF context data of a UE using non 3gpp access in the
+        UDR
+      operationId: AmfContextNon3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Expected response to a valid request
+        403:
+          description: modification is rejected
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AMFNon3GPPAccessRegistrationDocument
+  /subscription-data/{ueId}/context-data/smf-registrations:
+    get:
+      tags:
+      - SMF Registrations (Collection)
+      summary: Retrieves the SMF registration list of a UE
+      operationId: QuerySmfRegList
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmfRegList'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMFRegistrationsCollection
+  /subscription-data/{ueId}/context-data/smf-registrations/{pduSessionId}:
+    get:
+      tags:
+      - SMF Registration (Document)
+      summary: Retrieves the individual SMF registration of a UE
+      operationId: QuerySmfRegistration
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: pduSessionId
+        in: path
+        description: PDU session id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/PduSessionId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmfRegistration'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMFRegistrationDocument
+    put:
+      tags:
+      - SMF Registration (Document)
+      summary: To create an individual SMF context data of a UE in the UDR
+      operationId: CreateSmfContextNon3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: pduSessionId
+        in: path
+        description: PDU session id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/PduSessionId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmfRegistration'
+      responses:
+        201:
+          description: Upon success, a response body containing a representation of
+            the created Individual SmfRegistration resource shall be returned
+        default:
+          description: Unexpected error
+          headers:
+            Location:
+              description: 'Contains the URI of the newly created resource, according
+                to the structure: {apiRoot}/nudr-dr/<apiVersion>/subscription-data/{ueId}/context-data/smf-registrations/{pduSessionId}'
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMFRegistrationDocument
+    delete:
+      tags:
+      - SMF Registration (Document)
+      summary: To remove an individual SMF context data of a UE the UDR
+      operationId: DeleteSmfContext
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: pduSessionId
+        in: path
+        description: PDU session id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/PduSessionId'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned.
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMFRegistrationDocument
+  /subscription-data/{ueId}/operator-specific-data:
+    get:
+      tags:
+      - Operator-Specific Data Container (Document)
+      summary: Retrieves the operator specific data of a UE
+      operationId: QueryOperSpecData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      - name: If-None-Match
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.2
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: If-Modified-Since
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.3
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          headers:
+            Cache-Control:
+              description: Cache-Control containing max-age, as described in RFC 7234,
+                5.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+            ETag:
+              description: Entity Tag, containing a strong validator, as described
+                in RFC 7232, 2.3
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Last-Modified:
+              description: Timestamp for last modification of the resource, as described
+                in RFC 7232, 2.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorSpecificDataContainer'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: OperatorSpecificDataContainerDocument
+    patch:
+      tags:
+      - Operator-Specific Data Container (Document)
+      summary: To modify operator specific data of a UE
+      operationId: ModifyOperSpecData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Expected response to a valid request
+        403:
+          description: modification is rejected
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: OperatorSpecificDataContainerDocument
+  /subscription-data/{ueId}/context-data/smsf-3gpp-access:
+    get:
+      tags:
+      - SMSF 3GPP Registration (Document)
+      summary: Retrieves the SMSF context data of a UE using 3gpp access
+      operationId: QuerySmsfContext3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmsfRegistration'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMSF3GPPRegistrationDocument
+    put:
+      tags:
+      - SMSF 3GPP Registration (Document)
+      summary: Create the SMSF context data of a UE via 3GPP access
+      operationId: CreateSmsfContext3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmsfRegistration'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMSF3GPPRegistrationDocument
+    delete:
+      tags:
+      - SMSF 3GPP Registration (Document)
+      summary: To remove the SMSF context data of a UE via 3GPP access
+      operationId: DeleteSmsfContext3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMSF3GPPRegistrationDocument
+  /subscription-data/{ueId}/context-data/smsf-non-3gpp-access:
+    get:
+      tags:
+      - SMSF Non-3GPP Registration (Document)
+      summary: Retrieves the SMSF context data of a UE using non-3gpp access
+      operationId: QuerySmsfContextNon3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          minItems: 1
+          type: array
+          items:
+            type: string
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmsfRegistration'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMSFNon3GPPRegistrationDocument
+    put:
+      tags:
+      - SMSF Non-3GPP Registration (Document)
+      summary: Create the SMSF context data of a UE via non-3GPP access
+      operationId: CreateSmsfContextNon3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SmsfRegistration'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMSFNon3GPPRegistrationDocument
+    delete:
+      tags:
+      - SMSF Non-3GPP Registration (Document)
+      summary: To remove the SMSF context data of a UE via non-3GPP access
+      operationId: DeleteSmsfContextNon3gpp
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMSFNon3GPPRegistrationDocument
+  /subscription-data/{ueId}/{servingPlmnId}/provisioned-data/sms-mng-data:
+    get:
+      tags:
+      - SMS Management Subscription Data (Document)
+      summary: Retrieves the SMS management subscription data of a UE
+      operationId: QuerySmsMngData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: servingPlmnId
+        in: path
+        description: PLMN ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarPlmnId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      - name: If-None-Match
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.2
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: If-Modified-Since
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.3
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          headers:
+            Cache-Control:
+              description: Cache-Control containing max-age, as described in RFC 7234,
+                5.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+            ETag:
+              description: Entity Tag, containing a strong validator, as described
+                in RFC 7232, 2.3
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Last-Modified:
+              description: Timestamp for last modification of the resource, as described
+                in RFC 7232, 2.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmsManagementSubscriptionData'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMSManagementSubscriptionDataDocument
+  /subscription-data/{ueId}/{servingPlmnId}/provisioned-data/sms-data:
+    get:
+      tags:
+      - SMS Subscription Data (Document)
+      summary: Retrieves the SMS subscription data of a UE
+      operationId: QuerySmsData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: servingPlmnId
+        in: path
+        description: PLMN ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarPlmnId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      - name: If-None-Match
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.2
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: If-Modified-Since
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.3
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          headers:
+            Cache-Control:
+              description: Cache-Control containing max-age, as described in RFC 7234,
+                5.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+            ETag:
+              description: Entity Tag, containing a strong validator, as described
+                in RFC 7232, 2.3
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Last-Modified:
+              description: Timestamp for last modification of the resource, as described
+                in RFC 7232, 2.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SmsSubscriptionData'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SMSSubscriptionDataDocument
+  /subscription-data/{ueId}/pp-data:
+    get:
+      tags:
+      - Parameter Provision (Document)
+      summary: Read the profile of a given UE
+      operationId: GetppData
+      parameters:
+      - name: ueId
+        in: path
+        description: pp data for a UE
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      - name: If-None-Match
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.2
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: If-Modified-Since
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.3
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          headers:
+            Cache-Control:
+              description: Cache-Control containing max-age, as described in RFC 7234,
+                5.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+            ETag:
+              description: Entity Tag, containing a strong validator, as described
+                in RFC 7232, 2.3
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Last-Modified:
+              description: Timestamp for last modification of the resource, as described
+                in RFC 7232, 2.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PpData'
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: ParameterProvisionDocument
+    patch:
+      tags:
+      - ProvisionedParameterData (Document)
+      summary: modify the provisioned parameter data
+      operationId: ModifyPpData
+      parameters:
+      - name: ueId
+        in: path
+        description: pp data for a UE
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Expected response to a valid request
+        403:
+          description: modification is rejected
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: ProvisionedParameterDataDocument
+  /subscription-data/{ueId}/context-data/ee-subscriptions:
+    get:
+      tags:
+      - Event Exposure Subscriptions (Collection)
+      summary: Retrieves the ee subscriptions of a UE
+      operationId: Queryeesubscriptions
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EeSubscription'
+                x-content-type: application/json
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: EventExposureSubscriptionsCollection
+    post:
+      tags:
+      - Event Exposure Subscriptions (Collection)
+      summary: Create individual EE subscription
+      operationId: CreateEeSubscriptions
+      parameters:
+      - name: ueId
+        in: path
+        description: UE ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EeSubscription'
+        required: true
+      responses:
+        201:
+          description: Expected response to a valid request
+          headers:
+            Location:
+              description: 'Contains the URI of the newly created resource, according
+                to the structure: {apiRoot}/nudr-dr/<apiVersion>/subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}'
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EeSubscription'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: EventExposureSubscriptionsCollection
+  /subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}:
+    put:
+      tags:
+      - Event Exposure Subscription (Document)
+      summary: Update an individual ee subscriptions of a UE
+      operationId: UpdateEesubscriptions
+      parameters:
+      - name: ueId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EeSubscription'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        404:
+          description: update of non-existing resource is rejected
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: EventExposureSubscriptionDocument
+    delete:
+      tags:
+      - Event Exposure Subscription (Document)
+      summary: Deletes a eeSubscription
+      operationId: RemoveeeSubscriptions
+      parameters:
+      - name: ueId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        description: Unique ID of the subscription to remove
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        204:
+          description: Expected response to a successful subscription removal
+      x-swagger-router-controller: EventExposureSubscriptionDocument
+    patch:
+      tags:
+      - Event Exposure Subscription (Document)
+      summary: Modify an individual ee subscription of a UE
+      operationId: ModifyEesubscription
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              minItems: 1
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Successful response
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+      x-swagger-router-controller: EventExposureSubscriptionDocument
+  /subscription-data/{ueId}/context-data/ee-subscriptions/{subsId}/amf-subscriptions:
+    get:
+      tags:
+      - Query AMF Subscription Info (Document)
+      summary: Retrieve AMF subscription Info
+      operationId: GetAmfSubscriptionInfo
+      parameters:
+      - name: ueId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                minItems: 1
+                type: array
+                items:
+                  $ref: '#/components/schemas/AmfSubscriptionInfo'
+                x-content-type: application/json
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: QueryAMFSubscriptionInfoDocument
+    put:
+      tags:
+      - AMF Subscription Info (Document)
+      summary: Create AmfSubscriptions for an individual ee subscriptions of a UE
+      operationId: CreateAMFSubscriptions
+      parameters:
+      - name: ueId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              minItems: 1
+              type: array
+              items:
+                $ref: '#/components/schemas/AmfSubscriptionInfo'
+        required: true
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AMFSubscriptionInfoDocument
+    delete:
+      tags:
+      - Event AMF Subscription Info (Document)
+      summary: Deletes AMF Subscription Info for an eeSubscription
+      operationId: RemoveAmfSubscriptionsInfo
+      parameters:
+      - name: ueId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        204:
+          description: Expected response to a successful subscription removal
+      x-swagger-router-controller: EventAMFSubscriptionInfoDocument
+    patch:
+      tags:
+      - AmfSubscriptionInfo (Document)
+      summary: modify the AMF Subscription Info
+      operationId: ModifyAmfSubscriptionInfo
+      parameters:
+      - name: ueId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Expected response to a valid request
+        403:
+          description: modification is rejected
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: AmfSubscriptionInfoDocument
+  /subscription-data/group-data/{ueGroupId}/ee-subscriptions:
+    get:
+      tags:
+      - Event Exposure Group Subscriptions (Collection)
+      summary: Retrieves the ee subscriptions of a group of UEs or any UE
+      operationId: QueryEeGroupSubscriptions
+      parameters:
+      - name: ueGroupId
+        in: path
+        description: Group of UEs or any UE
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeGroupId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EeSubscription'
+                x-content-type: application/json
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: EventExposureGroupSubscriptionsCollection
+    post:
+      tags:
+      - Event Exposure Group Subscriptions (Collection)
+      summary: Create individual EE subscription for a group of UEs or any UE
+      operationId: CreateEeGroupSubscriptions
+      parameters:
+      - name: ueGroupId
+        in: path
+        description: Group of UEs or any UE
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeGroupId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EeSubscription'
+        required: true
+      responses:
+        201:
+          description: Expected response to a valid request
+          headers:
+            Location:
+              description: 'Contains the URI of the newly created resource, according
+                to the structure: {apiRoot}/nudr-dr/<apiVersion>/subscription-data/group-data/{ueGroupId}/ee-subscriptions '
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EeSubscription'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: EventExposureGroupSubscriptionsCollection
+  /subscription-data/group-data/{ueGroupId}/ee-subscriptions/{subsId}:
+    put:
+      tags:
+      - Event Exposure Subscription (Document)
+      summary: Update an individual ee subscription of a group of UEs or any UE
+      operationId: UpdateEeGroupSubscriptions
+      parameters:
+      - name: ueGroupId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeGroupId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EeSubscription'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        404:
+          description: update of non-existing resource is rejected
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: EventExposureSubscriptionDocument
+    delete:
+      tags:
+      - Event Exposure Subscription (Document)
+      summary: Deletes a eeSubscription for a group of UEs or any UE
+      operationId: RemoveEeGroupSubscriptions
+      parameters:
+      - name: ueGroupId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeGroupId'
+      - name: subsId
+        in: path
+        description: Unique ID of the subscription to remove
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        204:
+          description: Expected response to a successful subscription removal
+      x-swagger-router-controller: EventExposureSubscriptionDocument
+    patch:
+      tags:
+      - Event Exposure Subscription (Document)
+      summary: Modify an individual ee subscription for a group of a UEs
+      operationId: ModifyEeGroupSubscription
+      parameters:
+      - name: ueGroupId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeGroupId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              minItems: 1
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Successful response
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+      x-swagger-router-controller: EventExposureSubscriptionDocument
+  /subscription-data/{ueId}/ee-profile-data:
+    get:
+      tags:
+      - Event Exposure Data (Document)
+      summary: Retrieves the ee profile data of a UE
+      operationId: QueryEEData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: fields
+        in: query
+        description: attributes to be retrieved
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: supportedFeatures
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EeProfileData'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: EventExposureDataDocument
+  /subscription-data/{ueId}/context-data/sdm-subscriptions:
+    get:
+      tags:
+      - SDM Subscriptions (Collection)
+      summary: Retrieves the sdm subscriptions of a UE
+      operationId: Querysdmsubscriptions
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SdmSubscription'
+                x-content-type: application/json
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SDMSubscriptionsCollection
+    post:
+      tags:
+      - SDM Subscriptions (Collection)
+      summary: Create individual sdm subscription
+      operationId: CreateSdmSubscriptions
+      parameters:
+      - name: ueId
+        in: path
+        description: UE ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SdmSubscription'
+        required: true
+      responses:
+        201:
+          description: Expected response to a valid request
+          headers:
+            Location:
+              description: 'Contains the URI of the newly created resource, according
+                to the structure: {apiRoot}/nudr-dr/<apiVersion>/subscription-data/{ueId}/context-data/sdm-subscriptions/{subsId}'
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SdmSubscription'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SDMSubscriptionsCollection
+  /subscription-data/{ueId}/context-data/sdm-subscriptions/{subsId}:
+    put:
+      tags:
+      - SDM Subscription (Document)
+      summary: Update an individual sdm subscriptions of a UE
+      operationId: Updatesdmsubscriptions
+      parameters:
+      - name: ueId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SdmSubscription'
+      responses:
+        204:
+          description: Upon success, an empty response body shall be returned
+        404:
+          description: update of non-existing resource is rejected
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SDMSubscriptionDocument
+    delete:
+      tags:
+      - SDM Subscription (Document)
+      summary: Deletes a sdmsubscriptions
+      operationId: RemovesdmSubscriptions
+      parameters:
+      - name: ueId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        description: Unique ID of the subscription to remove
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        204:
+          description: Expected response to a successful subscription removal
+      x-swagger-router-controller: SDMSubscriptionDocument
+    patch:
+      tags:
+      - SDM Subscription (Document)
+      summary: Modify an individual sdm subscription
+      operationId: ModifysdmSubscription
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              minItems: 1
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Successful response
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+      x-swagger-router-controller: SDMSubscriptionDocument
+  /subscription-data/shared-data:
+    get:
+      tags:
+      - Retrieval of shared data
+      summary: retrieve shared data
+      operationId: GetSharedData
+      parameters:
+      - name: shared-data-ids
+        in: query
+        description: List of shared data ids
+        required: true
+        style: form
+        explode: false
+        schema:
+          $ref: '#/components/schemas/SharedDataIds'
+      - name: supportedFeatures
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                minItems: 1
+                type: array
+                items:
+                  $ref: '#/components/schemas/SharedData'
+                x-content-type: application/json
+        400:
+          description: Bad request
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Internal Server Error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        503:
+          description: Service Unavailable
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+      x-swagger-router-controller: RetrievalOfSharedData
+  /subscription-data/subs-to-notify:
+    get:
+      tags:
+      - Subs To Nofify (Collection)
+      summary: Retrieves the list of subscriptions
+      operationId: QuerySubsToNotify
+      parameters:
+      - name: ue-id
+        in: query
+        description: UE id
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionDataSubscriptions'
+                x-content-type: application/json
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: SubsToNofifyCollection
+    post:
+      tags:
+      - Subs To Nofify (Collection)
+      summary: Subscription data subscriptions
+      operationId: SubscriptionDataSubscriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionDataSubscriptions'
+        required: true
+      responses:
+        201:
+          description: Expected response to a valid request
+          headers:
+            Location:
+              description: 'Contains the URI of the newly created resource, according
+                to the structure: {apiRoot}/nudr-dr/<apiVersion>/subscription-data/subs-to-notify/{subsId}'
+              required: true
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionDataSubscriptions'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      callbacks:
+        onDataChange:
+          '{request.body#/callbackReference}':
+            post:
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/DataChangeNotify'
+                required: true
+              responses:
+                204:
+                  description: Expected response to a valid request
+      x-swagger-router-controller: SubsToNofifyCollection
+    delete:
+      tags:
+      - Subs To Notify (Collection)
+      summary: Deletes subscriptions identified by a given ue-id parameter
+      operationId: RemoveMultipleSubscriptionDataSubscriptions
+      parameters:
+      - name: ue-id
+        in: query
+        description: UE ID
+        required: true
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: nf-instance-id
+        in: query
+        description: NF Instance ID
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/NfInstanceId'
+      - name: delete-all-nfs
+        in: query
+        description: Flag to delete subscriptions from all NFs
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      - name: implicit-unsubscribe-indication
+        in: query
+        description: Implicit Unsubscribe Indication
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+      responses:
+        204:
+          description: Expected response to a successful subscription removal
+      x-swagger-router-controller: SubsToNotifyCollection
+  /subscription-data/subs-to-notify/{subsId}:
+    delete:
+      tags:
+      - Subs To Notify (Document)
+      summary: Deletes a subscriptionDataSubscriptions
+      operationId: RemovesubscriptionDataSubscriptions
+      parameters:
+      - name: subsId
+        in: path
+        description: Unique ID of the subscription to remove
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        204:
+          description: Expected response to a successful subscription removal
+      x-swagger-router-controller: SubsToNotifyDocument
+    patch:
+      tags:
+      - Subs To Notify (Document)
+      summary: Modify an individual subscriptionDataSubscription
+      operationId: ModifysubscriptionDataSubscription
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: subsId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json-patch+json:
+            schema:
+              minItems: 1
+              type: array
+              items:
+                $ref: '#/components/schemas/PatchItem'
+        required: true
+      responses:
+        204:
+          description: Successful response
+        403:
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Not Found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        default:
+          description: Unexpected error
+      x-swagger-router-controller: SubsToNotifyDocument
+  /subscription-data/{ueId}/{servingPlmnId}/provisioned-data/trace-data:
+    get:
+      tags:
+      - Trace Data (Document)
+      summary: Retrieves the trace configuration data of a UE
+      operationId: QueryTraceData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: servingPlmnId
+        in: path
+        description: PLMN ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarPlmnId'
+      - name: If-None-Match
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.2
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: If-Modified-Since
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.3
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: Expected response to a valid request
+          headers:
+            Cache-Control:
+              description: Cache-Control containing max-age, as described in RFC 7234,
+                5.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+            ETag:
+              description: Entity Tag, containing a strong validator, as described
+                in RFC 7232, 2.3
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Last-Modified:
+              description: Timestamp for last modification of the resource, as described
+                in RFC 7232, 2.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TraceData'
+        default:
+          description: Generic Error
+      x-swagger-router-controller: TraceDataDocument
+  /subscription-data/{ueId}/identity-data:
+    get:
+      tags:
+      - Query Identity Data by SUPI or GPSI (Document)
+      summary: Retrieve identity data by SUPI or GPSI
+      operationId: GetIdentityData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: If-None-Match
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.2
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: If-Modified-Since
+        in: header
+        description: Validator for conditional requests, as described in RFC 7232,
+          3.3
+        required: false
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          headers:
+            Cache-Control:
+              description: Cache-Control containing max-age, as described in RFC 7234,
+                5.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+            ETag:
+              description: Entity Tag, containing a strong validator, as described
+                in RFC 7232, 2.3
+              style: simple
+              explode: false
+              schema:
+                type: string
+            Last-Modified:
+              description: Timestamp for last modification of the resource, as described
+                in RFC 7232, 2.2
+              style: simple
+              explode: false
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityData'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: QueryIdentityDataBySUPIOrGPSIDocument
+  /subscription-data/{ueId}/operator-determined-barring-data:
+    get:
+      tags:
+      - Query ODB Data by SUPI or GPSI (Document)
+      summary: Retrieve ODB Data data by SUPI or GPSI
+      operationId: GetOdbData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE ID
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OdbData'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: QueryODBDataBySUPIOrGPSIDocument
+  /subscription-data/{ueId}/context-data:
+    get:
+      tags:
+      - Context Data (Document)
+      summary: Retrieve multiple context data sets of a UE
+      operationId: QueryContextData
+      parameters:
+      - name: ueId
+        in: path
+        description: UE id
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/VarUeId'
+      - name: context-dataset-names
+        in: query
+        description: List of context dataset names
+        required: true
+        style: form
+        explode: false
+        schema:
+          $ref: '#/components/schemas/ContextDatasetNames'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextDataSets'
+        default:
+          description: Unexpected error
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+      x-swagger-router-controller: ContextDataDocument
+  /subscription-data/group-data/group-identifiers:
+    get:
+      tags:
+      - Group Identifiers
+      summary: Mapping of Group Identifiers
+      operationId: GetGroupIdentifiers
+      parameters:
+      - name: ext-group-id
+        in: query
+        description: External Group Identifier
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/ExtGroupId'
+      - name: int-group-id
+        in: query
+        description: Internal Group Identifier
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/GroupId'
+      - name: supported-features
+        in: query
+        description: Supported Features
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/SupportedFeatures'
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupIdentifiers'
+      x-swagger-router-controller: GroupIdentifiers
+components:
+  schemas:
+    AuthenticationSubscription:
+      required:
+      - authenticationMethod
+      type: object
+      properties:
+        authenticationMethod:
+          $ref: '#/components/schemas/AuthMethod'
+        encPermanentKey:
+          type: string
+        protectionParameterId:
+          type: string
+        sequenceNumber:
+          $ref: '#/components/schemas/SequenceNumber'
+        authenticationManagementField:
+          pattern: ^[A-Fa-f0-9]{4}$
+          type: string
+        algorithmId:
+          type: string
+        encOpcKey:
+          type: string
+        encTopcKey:
+          type: string
+    SequenceNumber:
+      type: object
+      properties:
+        sqnScheme:
+          $ref: '#/components/schemas/SqnScheme'
+        sqn:
+          pattern: ^[A-Fa-f0-9]{12}$
+          type: string
+        lastIndexes:
+          type: object
+          additionalProperties:
+            minimum: 0
+            type: integer
+        indLength:
+          minimum: 0
+          type: integer
+        difSign:
+          $ref: '#/components/schemas/Sign'
+    SqnScheme:
+      anyOf:
+      - type: string
+        enum:
+        - GENERAL
+        - NON_TIME_BASED
+        - TIME_BASED
+      - type: string
+    Sign:
+      type: string
+      enum:
+      - POSITIVE
+      - NEGATIVE
+    VarPlmnId:
+      pattern: ^[0-9]{5,6}$
+      type: string
+    DatasetNames:
+      minItems: 1
+      uniqueItems: true
+      type: array
+      items:
+        $ref: '#/components/schemas/DataSetName'
+    DataSetName:
+      anyOf:
+      - type: string
+        enum:
+        - AM
+        - SMF_SEL
+        - SMS_SUB
+        - SM
+        - TRACE
+        - SMS_MNG
+      - type: string
+    ProvisionedDataSets:
+      type: object
+      properties:
+        amData:
+          $ref: '#/components/schemas/AccessAndMobilitySubscriptionData'
+        smfSelData:
+          $ref: '#/components/schemas/SmfSelectionSubscriptionData'
+        smsSubsData:
+          $ref: '#/components/schemas/SmsSubscriptionData'
+        smData:
+          type: array
+          items:
+            $ref: '#/components/schemas/SessionManagementSubscriptionData'
+        traceData:
+          $ref: '#/components/schemas/TraceData'
+        smsMngData:
+          $ref: '#/components/schemas/SmsManagementSubscriptionData'
+    AccessAndMobilitySubscriptionData:
+      type: object
+      properties:
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        gpsis:
+          type: array
+          items:
+            $ref: '#/components/schemas/Gpsi'
+        internalGroupIds:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupId'
+        subscribedUeAmbr:
+          $ref: '#/components/schemas/AmbrRm'
+        nssai:
+          $ref: '#/components/schemas/Nssai'
+        ratRestrictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/RatType'
+        forbiddenAreas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Area'
+        serviceAreaRestriction:
+          $ref: '#/components/schemas/ServiceAreaRestriction'
+        coreNetworkTypeRestrictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CoreNetworkType'
+        rfspIndex:
+          $ref: '#/components/schemas/RfspIndexRm'
+        subsRegTimer:
+          $ref: '#/components/schemas/DurationSecRm'
+        ueUsageType:
+          $ref: '#/components/schemas/UeUsageType'
+        mpsPriority:
+          $ref: '#/components/schemas/MpsPriorityIndicator'
+        mcsPriority:
+          $ref: '#/components/schemas/McsPriorityIndicator'
+        activeTime:
+          $ref: '#/components/schemas/DurationSecRm'
+        dlPacketCount:
+          $ref: '#/components/schemas/DlPacketCount'
+        sorInfo:
+          $ref: '#/components/schemas/SorInfo'
+        upuInfo:
+          $ref: '#/components/schemas/UpuInfo'
+        micoAllowed:
+          $ref: '#/components/schemas/MicoAllowed'
+        sharedAmDataIds:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SharedDataId'
+        odbPacketServices:
+          $ref: '#/components/schemas/OdbPacketServices'
+        subscribedDnnList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Dnn'
+    SmfSelectionSubscriptionData:
+      type: object
+      properties:
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        subscribedSnssaiInfos:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/SnssaiInfo'
+        sharedSnssaiInfosId:
+          $ref: '#/components/schemas/SharedDataId'
+    VarSnssai:
+      required:
+      - sst
+      type: object
+      properties:
+        sst:
+          maximum: 255
+          minimum: 0
+          type: integer
+        sd:
+          pattern: ^[A-Fa-f0-9]{6}$
+          type: string
+    Dnn:
+      type: string
+    SessionManagementSubscriptionData:
+      required:
+      - singleNssai
+      type: object
+      properties:
+        singleNssai:
+          $ref: '#/components/schemas/Snssai'
+        dnnConfigurations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DnnConfiguration'
+          description: A map (list of key-value pairs where Dnn serves as key) of
+            DnnConfigurations
+        internalGroupIds:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupId'
+        sharedDnnConfigurationsId:
+          $ref: '#/components/schemas/SharedDataId'
+        odbPacketServices:
+          $ref: '#/components/schemas/OdbPacketServices'
+    Amf3GppAccessRegistration:
+      required:
+      - amfInstanceId
+      - deregCallbackUri
+      - guami
+      - ratType
+      type: object
+      properties:
+        amfInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        purgeFlag:
+          $ref: '#/components/schemas/PurgeFlag'
+        pei:
+          $ref: '#/components/schemas/Pei'
+        imsVoPs:
+          $ref: '#/components/schemas/ImsVoPs'
+        deregCallbackUri:
+          $ref: '#/components/schemas/Uri'
+        amfServiceNameDereg:
+          $ref: '#/components/schemas/ServiceName'
+        pcscfRestorationCallbackUri:
+          $ref: '#/components/schemas/Uri'
+        amfServiceNamePcscfRest:
+          $ref: '#/components/schemas/ServiceName'
+        initialRegistrationInd:
+          type: boolean
+        guami:
+          $ref: '#/components/schemas/Guami'
+        backupAmfInfo:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupAmfInfo'
+        drFlag:
+          $ref: '#/components/schemas/DualRegistrationFlag'
+        ratType:
+          $ref: '#/components/schemas/RatType'
+        urrpIndicator:
+          type: boolean
+        amfEeSubscriptionId:
+          type: string
+        epsInterworkingInfo:
+          $ref: '#/components/schemas/Amf3GppAccessRegistration_epsInterworkingInfo'
+    AmfNon3GppAccessRegistration:
+      required:
+      - amfInstanceId
+      - deregCallbackUri
+      - guami
+      - imsVoPs
+      - ratType
+      type: object
+      properties:
+        amfInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        purgeFlag:
+          $ref: '#/components/schemas/PurgeFlag'
+        pei:
+          $ref: '#/components/schemas/Pei'
+        imsVoPs:
+          $ref: '#/components/schemas/ImsVoPs'
+        deregCallbackUri:
+          $ref: '#/components/schemas/Uri'
+        amfServiceNameDereg:
+          $ref: '#/components/schemas/ServiceName'
+        pcscfRestorationCallbackUri:
+          $ref: '#/components/schemas/Uri'
+        amfServiceNamePcscfRest:
+          $ref: '#/components/schemas/ServiceName'
+        guami:
+          $ref: '#/components/schemas/Guami'
+        backupAmfInfo:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/BackupAmfInfo'
+        ratType:
+          $ref: '#/components/schemas/RatType'
+        urrpIndicator:
+          type: boolean
+        amfEeSubscriptionId:
+          type: string
+    SmfRegistration:
+      required:
+      - pduSessionId
+      - plmnId
+      - singleNssai
+      - smfInstanceId
+      type: object
+      properties:
+        smfInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        pduSessionId:
+          $ref: '#/components/schemas/PduSessionId'
+        singleNssai:
+          $ref: '#/components/schemas/Snssai'
+        dnn:
+          $ref: '#/components/schemas/Dnn'
+        emergencyServices:
+          type: boolean
+        pcscfRestorationCallbackUri:
+          $ref: '#/components/schemas/Uri'
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+        pgwFqdn:
+          type: string
+    SmsfRegistration:
+      required:
+      - plmnId
+      - smsfInstanceId
+      type: object
+      properties:
+        smsfInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+        smsfMAPAddress:
+          $ref: '#/components/schemas/E164Number'
+        smsfDiameterAddress:
+          $ref: '#/components/schemas/NetworkNodeDiameterAddress'
+    SmsManagementSubscriptionData:
+      type: object
+      properties:
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        mtSmsSubscribed:
+          type: boolean
+        mtSmsBarringAll:
+          type: boolean
+        mtSmsBarringRoaming:
+          type: boolean
+        moSmsSubscribed:
+          type: boolean
+        moSmsBarringAll:
+          type: boolean
+        moSmsBarringRoaming:
+          type: boolean
+        sharedSmsMngDataIds:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SharedDataId'
+    SmsSubscriptionData:
+      type: object
+      properties:
+        smsSubscribed:
+          $ref: '#/components/schemas/SmsSubscribed'
+        sharedSmsSubsDataId:
+          $ref: '#/components/schemas/SharedDataId'
+    OperatorSpecificDataContainer:
+      type: object
+      properties:
+        StringTypeElements:
+          type: object
+          additionalProperties:
+            type: string
+        IntegerTypeElements:
+          type: object
+          additionalProperties:
+            type: integer
+        NumberTypeElements:
+          type: object
+          additionalProperties:
+            type: number
+        BooleanTypeElements:
+          type: object
+          additionalProperties:
+            type: boolean
+    AuthMethod:
+      anyOf:
+      - type: string
+        enum:
+        - 5G_AKA
+        - EAP_AKA_PRIME
+        - EAP_TLS
+      - type: string
+    PpData:
+      type: object
+      properties:
+        communicationCharacteristics:
+          $ref: '#/components/schemas/CommunicationCharacteristics'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+    EeSubscription:
+      required:
+      - callbackReference
+      - monitoringConfigurations
+      type: object
+      properties:
+        callbackReference:
+          $ref: '#/components/schemas/Uri'
+        monitoringConfigurations:
+          minProperties: 1
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/MonitoringConfiguration'
+          description: A map (list of key-value pairs where ReferenceId serves as
+            key) of MonitoringConfigurations
+        reportingOptions:
+          $ref: '#/components/schemas/ReportingOptions'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        subscriptionId:
+          type: string
+    VarUeGroupId:
+      pattern: ^(extgroupid-[^@]+@[^@]+|anyUE)$
+      type: string
+    SdmSubscription:
+      required:
+      - callbackReference
+      - monitoredResourceUris
+      - nfInstanceId
+      type: object
+      properties:
+        nfInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        implicitUnsubscribe:
+          type: boolean
+        expires:
+          $ref: '#/components/schemas/DateTime'
+        callbackReference:
+          $ref: '#/components/schemas/Uri'
+        amfServiceName:
+          $ref: '#/components/schemas/ServiceName'
+        monitoredResourceUris:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Uri'
+        singleNssai:
+          $ref: '#/components/schemas/Snssai'
+        dnn:
+          $ref: '#/components/schemas/Dnn'
+        subscriptionId:
+          type: string
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+    SmfRegList:
+      type: array
+      items:
+        $ref: '#/components/schemas/SmfRegistration'
+    SubscriptionDataSubscriptions:
+      required:
+      - callbackReference
+      - monitoredResourceUris
+      type: object
+      properties:
+        ueId:
+          $ref: '#/components/schemas/VarUeId'
+        callbackReference:
+          $ref: '#/components/schemas/Uri'
+        originalCallbackReference:
+          $ref: '#/components/schemas/Uri'
+        monitoredResourceUris:
+          type: array
+          items:
+            $ref: '#/components/schemas/Uri'
+        expiry:
+          $ref: '#/components/schemas/DateTime'
+        sdmSubscription:
+          $ref: '#/components/schemas/SdmSubscription'
+        subscriptionId:
+          type: string
+        supported-features:
+          $ref: '#/components/schemas/SupportedFeatures'
+    DataChangeNotify:
+      type: object
+      properties:
+        originalCallbackReference:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Uri'
+        ueId:
+          $ref: '#/components/schemas/VarUeId'
+        notifyItems:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/NotifyItem'
+        sdmSubscription:
+          $ref: '#/components/schemas/SdmSubscription'
+        subscriptionDataSubscriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionDataSubscriptions'
+    IdentityData:
+      type: object
+      properties:
+        supiList:
+          maxItems: 2
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Supi'
+        gpsiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Gpsi'
+    SorData:
+      required:
+      - provisioningTime
+      - ueUpdateStatus
+      type: object
+      properties:
+        provisioningTime:
+          $ref: '#/components/schemas/DateTime'
+        ueUpdateStatus:
+          $ref: '#/components/schemas/UeUpdateStatus'
+        sorXmacIue:
+          $ref: '#/components/schemas/SorMac'
+        sorMacIue:
+          $ref: '#/components/schemas/SorMac'
+    UpuData:
+      required:
+      - provisioningTime
+      - ueUpdateStatus
+      type: object
+      properties:
+        provisioningTime:
+          $ref: '#/components/schemas/DateTime'
+        ueUpdateStatus:
+          $ref: '#/components/schemas/UeUpdateStatus'
+        upuXmacIue:
+          $ref: '#/components/schemas/UpuMac'
+        upuMacIue:
+          $ref: '#/components/schemas/UpuMac'
+    UeUpdateStatus:
+      type: string
+      enum:
+      - NOT_SENT
+      - SENT_NO_ACK_REQUIRED
+      - WAITING_FOR_ACK
+      - ACK_RECEIVED
+    EeProfileData:
+      type: object
+      properties:
+        restrictedEventTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/EventType'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+    AmfSubscriptionInfo:
+      required:
+      - amfInstanceId
+      - subscriptionId
+      type: object
+      properties:
+        amfInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        subscriptionId:
+          $ref: '#/components/schemas/Uri'
+        subsChangeNotifyCorrelationId:
+          type: string
+    ContextDatasetNames:
+      minItems: 1
+      uniqueItems: true
+      type: array
+      items:
+        $ref: '#/components/schemas/ContextDataSetName'
+    ContextDataSetName:
+      anyOf:
+      - type: string
+        enum:
+        - AMF_3GPP
+        - AMF_NON_3GPP
+        - SDM_SUBSCRIPTIONS
+        - EE_SUBSCRIPTIONS
+        - SMSF_3GPP
+        - SMSF_NON_3GPP
+        - SUBS_TO_NOTIFY
+      - type: string
+    ContextDataSets:
+      type: object
+      properties:
+        amf3Gpp:
+          $ref: '#/components/schemas/Amf3GppAccessRegistration'
+        amfNon3Gpp:
+          $ref: '#/components/schemas/AmfNon3GppAccessRegistration'
+        sdmSubscriptions:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SdmSubscription'
+        eeSubscriptions:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/EeSubscription'
+        smsf3GppAccess:
+          $ref: '#/components/schemas/SmsfRegistration'
+        smsfNon3GppAccess:
+          $ref: '#/components/schemas/SmsfRegistration'
+        subscriptionDataSubscriptions:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SubscriptionDataSubscriptions'
+    VarUeId:
+      pattern: ^(imsi-[0-9]{5,15}|nai-.+|msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|.+)$
+      type: string
+    SupportedFeatures:
+      pattern: ^[A-Fa-f0-9]*$
+      type: string
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/Uri'
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          $ref: '#/components/schemas/Uri'
+        cause:
+          type: string
+        invalidParams:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/InvalidParam'
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+    Uri:
+      type: string
+    InvalidParam:
+      required:
+      - param
+      type: object
+      properties:
+        param:
+          type: string
+        reason:
+          type: string
+    PatchItem:
+      required:
+      - op
+      - path
+      type: object
+      properties:
+        op:
+          $ref: '#/components/schemas/PatchOperation'
+        path:
+          type: string
+        from:
+          type: string
+        value:
+          nullable: true
+    PatchOperation:
+      anyOf:
+      - type: string
+        enum:
+        - add
+        - copy
+        - move
+        - remove
+        - replace
+        - test
+      - type: string
+    AuthEvent:
+      required:
+      - authType
+      - nfInstanceId
+      - servingNetworkName
+      - success
+      - timeStamp
+      type: object
+      properties:
+        nfInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        success:
+          $ref: '#/components/schemas/Success'
+        timeStamp:
+          $ref: '#/components/schemas/DateTime'
+        authType:
+          $ref: '#/components/schemas/AuthType'
+        servingNetworkName:
+          $ref: '#/components/schemas/ServingNetworkName'
+    Success:
+      type: boolean
+    AuthType:
+      anyOf:
+      - type: string
+        enum:
+        - 5G_AKA
+        - EAP_AKA_PRIME
+        - EAP_TLS
+      - type: string
+    ServingNetworkName:
+      pattern: ^5G:mnc[0-9]{3}[.]mcc[0-9]{3}[.]3gppnetwork[.]org$
+      type: string
+    PduSessionId:
+      maximum: 255
+      minimum: 0
+      type: integer
+    SharedDataIds:
+      minItems: 1
+      uniqueItems: true
+      type: array
+      items:
+        $ref: '#/components/schemas/SharedDataId'
+    SharedDataId:
+      pattern: ^[0-9]{5,6}-.+$
+      type: string
+    SharedData:
+      required:
+      - sharedDataId
+      type: object
+      properties:
+        sharedDataId:
+          $ref: '#/components/schemas/SharedDataId'
+        sharedAmData:
+          $ref: '#/components/schemas/AccessAndMobilitySubscriptionData'
+        sharedSmsSubsData:
+          $ref: '#/components/schemas/SmsSubscriptionData'
+        sharedSmsMngSubsData:
+          $ref: '#/components/schemas/SmsManagementSubscriptionData'
+        sharedDnnConfigurations:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DnnConfiguration'
+        sharedTraceData:
+          $ref: '#/components/schemas/TraceData'
+        sharedSnssaiInfos:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/SnssaiInfo'
+    Nssai:
+      required:
+      - defaultSingleNssais
+      type: object
+      properties:
+        supportedFeatures:
+          $ref: '#/components/schemas/SupportedFeatures'
+        defaultSingleNssais:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Snssai'
+        singleNssais:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Snssai'
+      nullable: true
+    UeUsageType:
+      type: integer
+    MpsPriorityIndicator:
+      type: boolean
+    McsPriorityIndicator:
+      type: boolean
+    DlPacketCount:
+      minimum: -1
+      type: integer
+    SorInfo:
+      required:
+      - ackInd
+      - provisioningTime
+      type: object
+      properties:
+        steeringContainer:
+          $ref: '#/components/schemas/SteeringContainer'
+        ackInd:
+          $ref: '#/components/schemas/AckInd'
+        sorMacIausf:
+          $ref: '#/components/schemas/SorMac'
+        countersor:
+          $ref: '#/components/schemas/CounterSor'
+        provisioningTime:
+          $ref: '#/components/schemas/DateTime'
+    SteeringContainer:
+      oneOf:
+      - minItems: 1
+        type: array
+        items:
+          $ref: '#/components/schemas/SteeringInfo'
+      - $ref: '#/components/schemas/SecuredPacket'
+    SecuredPacket:
+      type: string
+      format: base64
+    UpuInfo:
+      required:
+      - provisioningTime
+      - upuAckInd
+      - upuDataList
+      - upuRegInd
+      type: object
+      properties:
+        upuDataList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/UpuData_2'
+        upuRegInd:
+          $ref: '#/components/schemas/UpuRegInd'
+        upuAckInd:
+          $ref: '#/components/schemas/UpuAckInd'
+        upuMacIausf:
+          $ref: '#/components/schemas/UpuMac'
+        counterUpu:
+          $ref: '#/components/schemas/CounterUpu'
+        provisioningTime:
+          $ref: '#/components/schemas/DateTime'
+    UpuRegInd:
+      type: boolean
+    MicoAllowed:
+      type: boolean
+    SmsSubscribed:
+      type: boolean
+    DnnConfiguration:
+      required:
+      - pduSessionTypes
+      - sscModes
+      type: object
+      properties:
+        pduSessionTypes:
+          $ref: '#/components/schemas/PduSessionTypes'
+        sscModes:
+          $ref: '#/components/schemas/SscModes'
+        iwkEpsInd:
+          $ref: '#/components/schemas/IwkEpsInd'
+        5gQosProfile:
+          $ref: '#/components/schemas/SubscribedDefaultQos'
+        sessionAmbr:
+          $ref: '#/components/schemas/Ambr'
+        3gppChargingCharacteristics:
+          $ref: '#/components/schemas/3GppChargingCharacteristics'
+        staticIpAddress:
+          maxItems: 2
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/IpAddress'
+        upSecurity:
+          $ref: '#/components/schemas/UpSecurity'
+    PduSessionTypes:
+      required:
+      - defaultSessionType
+      type: object
+      properties:
+        defaultSessionType:
+          $ref: '#/components/schemas/PduSessionType'
+        allowedSessionTypes:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/PduSessionType'
+    SscModes:
+      required:
+      - defaultSscMode
+      type: object
+      properties:
+        defaultSscMode:
+          $ref: '#/components/schemas/SscMode'
+        allowedSscModes:
+          maxItems: 2
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/SscMode'
+    IwkEpsInd:
+      type: boolean
+    3GppChargingCharacteristics:
+      type: string
+    IpAddress:
+      type: object
+      properties:
+        ipv4Addr:
+          $ref: '#/components/schemas/Ipv4Addr'
+        ipv6Addr:
+          $ref: '#/components/schemas/Ipv6Addr'
+        ipv6Prefix:
+          $ref: '#/components/schemas/Ipv6Prefix'
+      oneOf:
+      - required:
+        - ipv4Addr
+      - required:
+        - ipv6Addr
+      - required:
+        - ipv6Prefix
+    SnssaiInfo:
+      required:
+      - dnnInfos
+      type: object
+      properties:
+        dnnInfos:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/DnnInfo'
+    DnnInfo:
+      required:
+      - dnn
+      type: object
+      properties:
+        dnn:
+          $ref: '#/components/schemas/Dnn'
+        defaultDnnIndicator:
+          $ref: '#/components/schemas/DnnIndicator'
+        lboRoamingAllowed:
+          $ref: '#/components/schemas/LboRoamingAllowed'
+        iwkEpsInd:
+          $ref: '#/components/schemas/IwkEpsInd'
+    DnnIndicator:
+      type: boolean
+    LboRoamingAllowed:
+      type: boolean
+    NfInstanceId:
+      type: string
+      format: uuid
+    TraceData:
+      required:
+      - eventList
+      - neTypeList
+      - traceDepth
+      - traceRef
+      type: object
+      properties:
+        traceRef:
+          pattern: ^[0-9]{3}[0-9]{2,3}-[A-Fa-f0-9]{6}$
+          type: string
+        traceDepth:
+          $ref: '#/components/schemas/TraceDepth'
+        neTypeList:
+          pattern: ^[A-Fa-f0-9]+$
+          type: string
+        eventList:
+          pattern: ^[A-Fa-f0-9]+$
+          type: string
+        collectionEntityIpv4Addr:
+          $ref: '#/components/schemas/Ipv4Addr'
+        collectionEntityIpv6Addr:
+          $ref: '#/components/schemas/Ipv6Addr'
+        interfaceList:
+          pattern: ^[A-Fa-f0-9]+$
+          type: string
+      nullable: true
+    TraceDepth:
+      anyOf:
+      - type: string
+        enum:
+        - MINIMUM
+        - MEDIUM
+        - MAXIMUM
+        - MINIMUM_WO_VENDOR_EXTENSION
+        - MEDIUM_WO_VENDOR_EXTENSION
+        - MAXIMUM_WO_VENDOR_EXTENSION
+      - type: string
+    Ipv4Addr:
+      pattern: ^(([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$
+      type: string
+      example: 198.51.100.1
+    Ipv6Addr:
+      type: string
+      example: 2001:db8:85a3::8a2e:370:7334
+      allOf:
+      - pattern: ^((:|(0?|([1-9a-f][0-9a-f]{0,3}))):)((0?|([1-9a-f][0-9a-f]{0,3})):){0,6}(:|(0?|([1-9a-f][0-9a-f]{0,3})))$
+      - pattern: ^((([^:]+:){7}([^:]+))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?))$
+    OdbData:
+      type: object
+      properties:
+        roamingOdb:
+          $ref: '#/components/schemas/RoamingOdb'
+    RoamingOdb:
+      anyOf:
+      - type: string
+        enum:
+        - OUTSIDE_HOME_PLMN
+        - OUTSIDE_HOME_PLMN_COUNTRY
+      - type: string
+    ExtGroupId:
+      pattern: ^extgroupid-[^@]+@[^@]+$
+      type: string
+    GroupId:
+      pattern: ^[A-Fa-f0-9]{8}-[0-9]{3}-[0-9]{2,3}-([A-Fa-f0-9][A-Fa-f0-9]){1,10}$
+      type: string
+    GroupIdentifiers:
+      type: object
+      properties:
+        extGroupId:
+          $ref: '#/components/schemas/ExtGroupId'
+        intGroupId:
+          $ref: '#/components/schemas/GroupId'
+    Gpsi:
+      pattern: ^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|.+)$
+      type: string
+    AmbrRm:
+      required:
+      - downlink
+      - uplink
+      type: object
+      properties:
+        uplink:
+          $ref: '#/components/schemas/BitRate'
+        downlink:
+          $ref: '#/components/schemas/BitRate'
+      nullable: true
+    BitRate:
+      pattern: ^\d+(\.\d+)? (bps|Kbps|Mbps|Gbps|Tbps)$
+      type: string
+    RatType:
+      anyOf:
+      - type: string
+        enum:
+        - NR
+        - EUTRA
+        - WLAN
+        - VIRTUAL
+      - type: string
+    Area:
+      type: object
+      properties:
+        tacs:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Tac'
+        areaCode:
+          $ref: '#/components/schemas/AreaCode'
+      oneOf:
+      - required:
+        - tacs
+      - required:
+        - areaCode
+    Tac:
+      pattern: (^[A-Fa-f0-9]{4}$)|(^[A-Fa-f0-9]{6}$)
+      type: string
+    AreaCode:
+      type: string
+    ServiceAreaRestriction:
+      type: object
+      properties:
+        restrictionType:
+          $ref: '#/components/schemas/RestrictionType'
+        areas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Area'
+        maxNumOfTAs:
+          $ref: '#/components/schemas/Uinteger'
+        maxNumOfTAsForNotAllowedAreas:
+          $ref: '#/components/schemas/Uinteger'
+      allOf:
+      - oneOf:
+        - not:
+            required:
+            - restrictionType
+        - required:
+          - areas
+      - anyOf:
+        - not:
+            required:
+            - restrictionType
+            properties:
+              restrictionType:
+                type: string
+                enum:
+                - NOT_ALLOWED_AREAS
+        - not:
+            required:
+            - maxNumOfTAs
+      - anyOf:
+        - not:
+            required:
+            - restrictionType
+            properties:
+              restrictionType:
+                type: string
+                enum:
+                - ALLOWED_AREAS
+        - not:
+            required:
+            - maxNumOfTAsForNotAllowedAreas
+    RestrictionType:
+      anyOf:
+      - type: string
+        enum:
+        - ALLOWED_AREAS
+        - NOT_ALLOWED_AREAS
+      - type: string
+    Uinteger:
+      minimum: 0
+      type: integer
+    CoreNetworkType:
+      anyOf:
+      - type: string
+        enum:
+        - 5GC
+        - EPC
+      - type: string
+    RfspIndexRm:
+      maximum: 256
+      minimum: 1
+      type: integer
+      nullable: true
+    DurationSecRm:
+      type: integer
+      nullable: true
+    OdbPacketServices:
+      nullable: true
+      anyOf:
+      - type: string
+        enum:
+        - ALL_PACKET_SERVICES
+        - ROAMER_ACCESS_HPLMN_AP
+        - ROAMER_ACCESS_VPLMN_AP
+      - type: string
+    Snssai:
+      required:
+      - sst
+      type: object
+      properties:
+        sst:
+          maximum: 255
+          minimum: 0
+          type: integer
+        sd:
+          pattern: ^[A-Fa-f0-9]{6}$
+          type: string
+    PurgeFlag:
+      type: boolean
+    ImsVoPs:
+      anyOf:
+      - type: string
+        enum:
+        - HOMOGENEOUS_SUPPORT
+        - HOMOGENEOUS_NON_SUPPORT
+        - NON_HOMOGENEOUS_OR_UNKNOWN
+      - type: string
+    DualRegistrationFlag:
+      type: boolean
+    EpsIwkPgw:
+      required:
+      - pgwFqdn
+      - smfInstanceId
+      type: object
+      properties:
+        pgwFqdn:
+          type: string
+        smfInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+    E164Number:
+      pattern: ^[0-9]{1,15}$
+      type: string
+    NetworkNodeDiameterAddress:
+      required:
+      - name
+      - realm
+      type: object
+      properties:
+        name:
+          $ref: '#/components/schemas/DiameterIdentity'
+        realm:
+          $ref: '#/components/schemas/DiameterIdentity'
+    CommunicationCharacteristics:
+      type: object
+      properties:
+        ppSubsRegTimer:
+          $ref: '#/components/schemas/PpSubsRegTimer'
+        ppActiveTime:
+          $ref: '#/components/schemas/PpActiveTime'
+        ppDlPacketCount:
+          $ref: '#/components/schemas/PpDlPacketCount'
+    PpSubsRegTimer:
+      required:
+      - afInstanceId
+      - referenceId
+      - subsRegTimer
+      type: object
+      properties:
+        subsRegTimer:
+          $ref: '#/components/schemas/DurationSec'
+        afInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        referenceId:
+          $ref: '#/components/schemas/ReferenceId'
+      nullable: true
+    ReferenceId:
+      type: integer
+    PpActiveTime:
+      required:
+      - activeTime
+      - afInstanceId
+      - referenceId
+      type: object
+      properties:
+        activeTime:
+          $ref: '#/components/schemas/DurationSec'
+        afInstanceId:
+          $ref: '#/components/schemas/NfInstanceId'
+        referenceId:
+          $ref: '#/components/schemas/ReferenceId'
+      nullable: true
+    PpDlPacketCount:
+      type: integer
+      nullable: true
+    MonitoringConfiguration:
+      required:
+      - eventType
+      type: object
+      properties:
+        eventType:
+          $ref: '#/components/schemas/EventType'
+        immediateFlag:
+          type: boolean
+        locationReportingConfiguration:
+          $ref: '#/components/schemas/LocationReportingConfiguration'
+    EventType:
+      anyOf:
+      - type: string
+        enum:
+        - LOSS_OF_CONNECTIVITY
+        - UE_REACHABILITY_FOR_DATA
+        - UE_REACHABILITY_FOR_SMS
+        - LOCATION_REPORTING
+        - CHANGE_OF_SUPI_PEI_ASSOCIATION
+        - ROAMING_STATUS
+        - COMMUNICATION_FAILURE
+        - AVAILABILITY_AFTER_DNN_FAILURE
+      - type: string
+    LocationReportingConfiguration:
+      required:
+      - currentLocation
+      type: object
+      properties:
+        currentLocation:
+          type: boolean
+        oneTime:
+          type: boolean
+        accuracy:
+          $ref: '#/components/schemas/LocationAccuracy'
+    LocationAccuracy:
+      anyOf:
+      - type: string
+        enum:
+        - CELL_LEVEL
+        - TA_LEVEL
+      - type: string
+    ReportingOptions:
+      type: object
+      properties:
+        maxNumOfReports:
+          $ref: '#/components/schemas/MaxNumOfReports'
+        expiry:
+          $ref: '#/components/schemas/DateTime'
+    MaxNumOfReports:
+      type: integer
+    DateTime:
+      type: string
+      format: date-time
+    NotifyItem:
+      required:
+      - changes
+      - resourceId
+      type: object
+      properties:
+        resourceId:
+          $ref: '#/components/schemas/Uri'
+        changes:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/ChangeItem'
+    ChangeItem:
+      required:
+      - op
+      - path
+      type: object
+      properties:
+        op:
+          $ref: '#/components/schemas/ChangeType'
+        path:
+          type: string
+        from:
+          type: string
+        origValue: {}
+        newValue: {}
+    ChangeType:
+      anyOf:
+      - type: string
+        enum:
+        - ADD
+        - MOVE
+        - REMOVE
+        - REPLACE
+      - type: string
+    Supi:
+      pattern: ^(imsi-[0-9]{5,15}|nai-.+|.+)$
+      type: string
+    SorMac:
+      pattern: ^[A-Fa-f0-9]{32}$
+      type: string
+    UpuMac:
+      pattern: ^[A-Fa-f0-9]{32}$
+      type: string
+    AckInd:
+      type: boolean
+    CounterSor:
+      pattern: ^[A-Fa-f0-9]{4}$
+      type: string
+    SteeringInfo:
+      required:
+      - plmnId
+      type: object
+      properties:
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+        accessTechList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessTech'
+    AccessTech:
+      anyOf:
+      - type: string
+        enum:
+        - NR
+        - EUTRAN_IN_WBS1_MODE_AND_NBS1_MODE
+        - EUTRAN_IN_NBS1_MODE_ONLY
+        - EUTRAN_IN_WBS1_MODE_ONLY
+        - UTRAN
+        - GSM_AND_ECGSM_IoT
+        - GSM_WITHOUT_ECGSM_IoT
+        - ECGSM_IoT_ONLY
+        - CDMA_1xRTT
+        - CDMA_HRPD
+        - GSM_COMPACT
+      - type: string
+    UpuData_2:
+      type: object
+      properties:
+        secPacket:
+          $ref: '#/components/schemas/SecuredPacket_2'
+        defaultConfNssai:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Snssai'
+      oneOf:
+      - required:
+        - secPacket
+      - required:
+        - defaultConfNssai
+    UpuAckInd:
+      type: boolean
+    CounterUpu:
+      pattern: ^[A-Fa-f0-9]{4}$
+      type: string
+    SubscribedDefaultQos:
+      required:
+      - 5qi
+      - arp
+      type: object
+      properties:
+        5qi:
+          $ref: '#/components/schemas/5Qi'
+        arp:
+          $ref: '#/components/schemas/Arp'
+        priorityLevel:
+          $ref: '#/components/schemas/5QiPriorityLevel'
+    5Qi:
+      maximum: 255
+      minimum: 0
+      type: integer
+    Arp:
+      required:
+      - preemptCap
+      - preemptVuln
+      - priorityLevel
+      type: object
+      properties:
+        priorityLevel:
+          $ref: '#/components/schemas/ArpPriorityLevel'
+        preemptCap:
+          $ref: '#/components/schemas/PreemptionCapability'
+        preemptVuln:
+          $ref: '#/components/schemas/PreemptionVulnerability'
+    ArpPriorityLevel:
+      maximum: 15
+      minimum: 1
+      type: integer
+      description: nullable true shall not be used for this attribute
+      nullable: true
+    PreemptionCapability:
+      anyOf:
+      - type: string
+        enum:
+        - NOT_PREEMPT
+        - MAY_PREEMPT
+      - type: string
+    PreemptionVulnerability:
+      anyOf:
+      - type: string
+        enum:
+        - NOT_PREEMPTABLE
+        - PREEMPTABLE
+      - type: string
+    5QiPriorityLevel:
+      maximum: 127
+      minimum: 1
+      type: integer
+    Ambr:
+      required:
+      - downlink
+      - uplink
+      type: object
+      properties:
+        uplink:
+          $ref: '#/components/schemas/BitRate'
+        downlink:
+          $ref: '#/components/schemas/BitRate'
+    UpSecurity:
+      required:
+      - upConfid
+      - upIntegr
+      type: object
+      properties:
+        upIntegr:
+          $ref: '#/components/schemas/UpIntegrity'
+        upConfid:
+          $ref: '#/components/schemas/UpConfidentiality'
+    UpIntegrity:
+      anyOf:
+      - type: string
+        enum:
+        - REQUIRED
+        - PREFERRED
+        - NOT_NEEDED
+      - type: string
+    UpConfidentiality:
+      anyOf:
+      - type: string
+        enum:
+        - REQUIRED
+        - PREFERRED
+        - NOT_NEEDED
+      - type: string
+    PduSessionType:
+      anyOf:
+      - type: string
+        enum:
+        - IPV4
+        - IPV6
+        - IPV4V6
+        - UNSTRUCTURED
+        - ETHERNET
+      - type: string
+    SscMode:
+      anyOf:
+      - type: string
+        enum:
+        - SSC_MODE_1
+        - SSC_MODE_2
+        - SSC_MODE_3
+      - type: string
+    Ipv6Prefix:
+      type: string
+      example: 2001:db8:abcd:12::0/64
+      allOf:
+      - pattern: ^((:|(0?|([1-9a-f][0-9a-f]{0,3}))):)((0?|([1-9a-f][0-9a-f]{0,3})):){0,6}(:|(0?|([1-9a-f][0-9a-f]{0,3})))(\/(([0-9])|([0-9]{2})|(1[0-1][0-9])|(12[0-8])))$
+      - pattern: ^((([^:]+:){7}([^:]+))|((([^:]+:)*[^:]+)?::(([^:]+:)*[^:]+)?))(\/.+)$
+    Pei:
+      pattern: ^(imei-[0-9]{15}|imeisv-[0-9]{16}|.+)$
+      type: string
+    ServiceName:
+      anyOf:
+      - type: string
+        enum:
+        - nnrf-nfm
+        - nnrf-disc
+        - nudm-sdm
+        - nudm-uecm
+        - nudm-ueau
+        - nudm-ee
+        - nudm-pp
+        - namf-comm
+        - namf-evts
+        - namf-mt
+        - namf-loc
+        - nsmf-pdusession
+        - nsmf-event-exposure
+        - nausf-auth
+        - nausf-sorprotection
+        - nausf-upuprotection
+        - nnef-pfdmanagement
+        - npcf-am-policy-control
+        - npcf-smpolicycontrol
+        - npcf-policyauthorization
+        - npcf-bdtpolicycontrol
+        - npcf-eventexposure
+        - npcf-ue-policy-control
+        - nsmsf-sms
+        - nnssf-nsselection
+        - nnssf-nssaiavailability
+        - nudr-dr
+        - nlmf-loc
+        - n5g-eir-eic
+        - nbsf-management
+        - nchf-spendinglimitcontrol
+        - nchf-convergedcharging
+        - nnwdaf-eventssubscription
+        - nnwdaf-analyticsinfo
+      - type: string
+    Guami:
+      required:
+      - amfId
+      - plmnId
+      type: object
+      properties:
+        plmnId:
+          $ref: '#/components/schemas/PlmnId'
+        amfId:
+          $ref: '#/components/schemas/AmfId'
+    PlmnId:
+      required:
+      - mcc
+      - mnc
+      type: object
+      properties:
+        mcc:
+          $ref: '#/components/schemas/Mcc'
+        mnc:
+          $ref: '#/components/schemas/Mnc'
+    Mcc:
+      pattern: ^\d{3}$
+      type: string
+    Mnc:
+      pattern: ^\d{2,3}$
+      type: string
+    AmfId:
+      pattern: ^[A-Fa-f0-9]{6}$
+      type: string
+    BackupAmfInfo:
+      required:
+      - backupAmf
+      type: object
+      properties:
+        backupAmf:
+          $ref: '#/components/schemas/AmfName'
+        guamiList:
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Guami'
+    AmfName:
+      type: string
+    DiameterIdentity:
+      pattern: ^([A-Za-z0-9]+([-A-Za-z0-9]+)\.)+[a-z]{2,}$
+      type: string
+    DurationSec:
+      type: integer
+    SecuredPacket_2:
+      type: string
+      format: base64
+    Amf3GppAccessRegistration_epsInterworkingInfo:
+      type: object
+      properties:
+        epsIwkPgws:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/EpsIwkPgw'
+          description: A map (list of key-value pairs where Dnn serves as key) of
+            EpsIwkPgws
